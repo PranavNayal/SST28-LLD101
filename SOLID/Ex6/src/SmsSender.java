@@ -3,8 +3,11 @@ public class SmsSender extends NotificationSender {
 
     @Override
     public void send(Notification n) {
-        // Ignores subject; base type doesn't clarify expectations (smell)
-        System.out.println("SMS -> to=" + n.phone + " body=" + n.body);
+        // LSP: SMS channel doesn't use subject field, only body and phone
+        String phone = n.phone == null ? "" : n.phone;
+        String body = n.body == null ? "" : n.body;
+        
+        System.out.println("SMS -> to=" + phone + " body=" + body);
         audit.add("sms sent");
     }
 }

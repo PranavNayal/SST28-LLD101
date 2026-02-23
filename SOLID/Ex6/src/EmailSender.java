@@ -3,10 +3,12 @@ public class EmailSender extends NotificationSender {
 
     @Override
     public void send(Notification n) {
-        // LSP smell: truncates silently, changing meaning
-        String body = n.body;
-        if (body.length() > 40) body = body.substring(0, 40);
-        System.out.println("EMAIL -> to=" + n.email + " subject=" + n.subject + " body=" + body);
+        // LSP fix: preserve full message content without truncation
+        String subject = n.subject == null ? "" : n.subject;
+        String body = n.body == null ? "" : n.body;
+        String email = n.email == null ? "" : n.email;
+        
+        System.out.println("EMAIL -> to=" + email + " subject=" + subject + " body=" + body);
         audit.add("email sent");
     }
 }
