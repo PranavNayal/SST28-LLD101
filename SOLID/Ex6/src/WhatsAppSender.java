@@ -3,11 +3,16 @@ public class WhatsAppSender extends NotificationSender {
 
     @Override
     public void send(Notification n) {
-        // LSP violation: tightens precondition
-        if (n.phone == null || !n.phone.startsWith("+")) {
-            throw new IllegalArgumentException("phone must start with + and country code");
+        // LSP fix: normalize phone format instead of throwing exception
+        String phone = n.phone == null ? "" : n.phone;
+        String body = n.body == null ? "" : n.body;
+        
+        // Normalize phone if it doesn't start with +
+        if (!phone.isEmpty() && !phone.startsWith("+")) {
+            phone = "+" + phone;
         }
-        System.out.println("WA -> to=" + n.phone + " body=" + n.body);
+        
+        System.out.println("WA -> to=" + phone + " body=" + body);
         audit.add("wa sent");
     }
 }

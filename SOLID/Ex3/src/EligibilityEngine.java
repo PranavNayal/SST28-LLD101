@@ -3,6 +3,7 @@ import java.util.*;
 public class EligibilityEngine {
     private final FakeEligibilityStore store;
     private final List<EligibilityRule> rules;
+    private final List<EligibilityRule> rules;
 
     public EligibilityEngine(FakeEligibilityStore store) {
         this.store = store;
@@ -32,13 +33,7 @@ public class EligibilityEngine {
                 reasons.add(result.failureReason);
                 break;  // Stop at first failure to match original behavior
             }
-        }
-
-        return new EligibilityEngineResult(status, reasons);
-    }
-}
-
-class EligibilityEngineResult {
+ {
     public final String status;
     public final List<String> reasons;
     public EligibilityEngineResult(String status, List<String> reasons) {

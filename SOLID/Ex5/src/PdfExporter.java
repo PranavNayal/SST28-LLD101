@@ -1,13 +1,21 @@
 import java.nio.charset.StandardCharsets;
 
 public class PdfExporter extends Exporter {
+    private static final int MAX_LENGTH = 20;
+
     @Override
     public ExportResult export(ExportRequest req) {
-        // LSP violation: tightens precondition arbitrarily
-        if (req.body != null && req.body.length() > 20) {
-            throw new IllegalArgumentException("PDF cannot handle content > 20 chars");
+        // LSP fix: Handle any length gracefully instead of throwing
+        String title = req.title == null ? "" : req.title;
+        String body = req.body == null ? "" : req.body;
+        
+        // If content is too long, truncate with ellipsis instead of throwing
+        if (body.length() > MAX_LENGTH) {
+            body = body.substring(0, MAX_LENGTH - 3) + "...";
         }
-        String fakePdf = "PDF(" + req.title + "):" + req.body;
+        if(body.length()>Max_length)
+        String fakePdf = "PDF(" + title + "):" + body;
         return new ExportResult("application/pdf", fakePdf.getBytes(StandardCharsets.UTF_8));
     }
 }
+
